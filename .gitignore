@@ -1,0 +1,17 @@
+node_modules/
+.expo/
+dist/
+dist-android/
+coverage/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+android/
+ios/
+.local/
+
+.pnpm-store/
+.idea/
+backend/uploads/
