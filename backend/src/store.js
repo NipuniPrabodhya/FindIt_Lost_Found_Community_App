@@ -5,15 +5,10 @@ export async function createMongoStore(db) {
   await users.createIndex({ email: 1 }, { unique: true });
   await sessions.createIndex({ tokenHash: 1 }, { unique: true });
   await sessions.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 });
-  const trips=db.collection('trips'), saved=db.collection('savedJourneys');
   const lostFoundPosts = db.collection('lostFoundPosts');
-  await trips.createIndex({id:1},{unique:true});
-  await trips.createIndex({mode:1,from:1,to:1,date:1});
-  await saved.createIndex({userId:1,tripId:1,date:1},{unique:true});
   await lostFoundPosts.createIndex({ createdAt: -1 });
   await lostFoundPosts.createIndex({ userId: 1 });
   await lostFoundPosts.createIndex({ type: 1 });
-  const savedView=d=>d&&({...d,id:String(d._id),_id:undefined,userId:undefined});
   const lostFoundView = d =>d && ({...d, id: String(d._id), _id: undefined});
   return {
     searchTrips:q=>trips.find({from:q.from,to:q.to,mode:q.mode,date:q.date},{projection:{_id:0}}).limit(50).toArray(),
